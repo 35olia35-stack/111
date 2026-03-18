@@ -14,26 +14,57 @@ module.exports = async (req, res) => {
       },
       body: JSON.stringify({
         model: "gpt-4o-mini",
+        temperature: 0.7,
+        response_format: { type: "json_object" },
         messages: [
-          { role: "system", content: systemPrompt || "" },
-          { role: "user", content: userPrompt || "" }
-        ],
-        temperature: 0.7
+          {
+            role: "system",
+            content: `${systemPrompt || ""}\n\nReturn only valid JSON. No markdown fences.`
+          },
+          {
+            role: "user",
+            content: userPrompt || ""
+          }
+        ]
       })
     });
 
     const data = await response.json();
-    const text = data?.choices?.[0]?.message?.content || "{}";
+
+    if (!response.ok) {
+      return res.status(response.status).json({
+        error: "OpenAI request failed",
+        details: data
+      });
+    }
+
+    let text = data?.choices?.[0]?.message?.content || "{}";
+
+    if (typeof text !== "string") {
+      text = JSON.stringify(text || {});
+    }
+
+    text = text
+      .replace(/^```json\s*/i, "")
+      .replace(/^```\s*/i, "")
+      .replace(/\s*```$/i, "")
+      .trim();
 
     let parsed = {};
     try {
       parsed = JSON.parse(text);
     } catch {
-      parsed = { raw: text };
+      return res.status(500).json({
+        error: "Model did not return valid JSON",
+        raw: text
+      });
     }
 
     return res.status(200).json(parsed);
-  } catch (_error) {
-    return res.status(500).json({ error: "Server error" });
+  } catch (error) {
+    return res.status(500).json({
+      error: "Server error",
+      details: String(error && error.message ? error.message : error)
+    });
   }
 };
