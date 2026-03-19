@@ -32,6 +32,7 @@ console.log("SYSTEM:", systemPrompt?.slice(0, 200));
     const data = await response.json();
 
     if (!response.ok) {
+      console.log("OPENAI ERROR:", JSON.stringify(data, null, 2));
       return res.status(response.status).json({
         error: "OpenAI request failed",
         details: data
