@@ -5,7 +5,7 @@ module.exports = async (req, res) => {
 
   try {
     const { systemPrompt, userPrompt } = req.body || {};
-
+console.log("SYSTEM:", systemPrompt?.slice(0, 200));
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
