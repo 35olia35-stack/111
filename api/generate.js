@@ -5,7 +5,7 @@ module.exports = async (req, res) => {
 
   try {
     const { systemPrompt, userPrompt } = req.body || {};
-console.log("SYSTEM:", systemPrompt?.slice(0, 200));
+
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -14,7 +14,6 @@ console.log("SYSTEM:", systemPrompt?.slice(0, 200));
       },
       body: JSON.stringify({
         model: "gpt-5-mini",
-       
         response_format: { type: "json_object" },
         messages: [
           {
@@ -32,7 +31,6 @@ console.log("SYSTEM:", systemPrompt?.slice(0, 200));
     const data = await response.json();
 
     if (!response.ok) {
-      console.log("OPENAI ERROR:", JSON.stringify(data, null, 2));
       return res.status(response.status).json({
         error: "OpenAI request failed",
         details: data
