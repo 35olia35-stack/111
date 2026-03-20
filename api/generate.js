@@ -14,7 +14,7 @@ console.log("SYSTEM:", systemPrompt?.slice(0, 200));
       },
       body: JSON.stringify({
         model: "gpt-5-mini",
-        temperature: 0.2,
+       
         response_format: { type: "json_object" },
         messages: [
           {
