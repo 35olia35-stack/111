@@ -13,7 +13,7 @@ console.log("SYSTEM:", systemPrompt?.slice(0, 200));
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "gpt-4.1-mini",
+        model: "gpt-5-mini",
         temperature: 0.7,
         response_format: { type: "json_object" },
         messages: [
