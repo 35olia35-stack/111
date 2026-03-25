@@ -1,1 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buy 100 Generations</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f6f7fb;
+      color: #111827;
+    }
+    .wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 12px 30px rgba(0,0,0,.08);
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+    }
+    p {
+      margin: 0 0 14px;
+      line-height: 1.5;
+    }
+    .price {
+      font-size: 32px;
+      font-weight: 700;
+      margin: 18px 0 10px;
+    }
+    .note {
+      font-size: 14px;
+      color: #4b5563;
+      margin-top: 14px;
+    }
+    #paypal-button-container {
+      margin-top: 22px;
+    }
+  </style>
+  <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD"></script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Buy 100 Generations</h1>
+      <p>One-time purchase for your eBay Listing Assistant.</p>
+      <div class="price">$3.99</div>
+      <p>After payment, you’ll receive 100 generations.</p>
 
+      <div id="paypal-button-container"></div>
+
+      <p class="note">
+        Keep this page open until payment completes.
+      </p>
+    </div>
+  </div>
+
+  <script>
+    paypal.Buttons({
+      style: {
+        shape: 'rect',
+        layout: 'vertical'
+      },
+
+      createOrder: function(data, actions) {
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              value: '3.99'
+            },
+            description: '100 generations for eBay Listing Assistant'
+          }]
+        });
+      },
+
+      onApprove: function(data, actions) {
+        return actions.order.capture().then(function(details) {
+          alert('Payment completed. Next step: connect this purchase to your extension account.');
+        });
+      }
+    }).render('#paypal-button-container');
+  </script>
+</body>
+</html>
