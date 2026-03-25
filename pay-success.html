@@ -45,5 +45,13 @@
     <p>You can now return to the extension.</p>
     <button onclick="window.close()">Close</button>
   </div>
+<script>
+  const params = new URLSearchParams(window.location.search);
+
+  if (params.get("paid") === "1") {
+    localStorage.setItem("ebayPaid", "true");
+  }
+</script>
+
 </body>
 </html>
