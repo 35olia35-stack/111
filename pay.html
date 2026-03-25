@@ -82,7 +82,8 @@
 
      onApprove: function(data, actions) {
   return actions.order.capture().then(function(details) {
-    window.location.href = "/pay-success.html?paid=1";
+    const orderId = encodeURIComponent(data.orderID || "");
+    window.location.href = `/pay-success.html?paid=1&orderId=${orderId}`;
   });
 }
     }).render('#paypal-button-container');
