@@ -52,10 +52,20 @@
     const extensionId = params.get("extensionId");
 
     if (extensionId) {
-      chrome.runtime.sendMessage(extensionId, {
-        type: "PAYMENT_SUCCESS",
-        paid: true
-      });
+      chrome.runtime.sendMessage(
+        extensionId,
+        {
+          type: "PAYMENT_SUCCESS",
+          paid: true
+        },
+        (response) => {
+          if (chrome.runtime.lastError) {
+            console.error("Payment message failed:", chrome.runtime.lastError.message);
+            return;
+          }
+          console.log("Payment message sent:", response);
+        }
+      );
     }
   }
 </script>
