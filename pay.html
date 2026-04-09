@@ -80,10 +80,12 @@
         });
       },
 
-     onApprove: function(data, actions) {
+    onApprove: function(data, actions) {
   return actions.order.capture().then(function(details) {
     const orderId = encodeURIComponent(data.orderID || "");
-    window.location.href = `/pay-success.html?paid=1&orderId=${orderId}`;
+    const params = new URLSearchParams(window.location.search);
+    const extensionId = encodeURIComponent(params.get("extensionId") || "");
+    window.location.href = `/pay-success.html?paid=1&orderId=${orderId}&extensionId=${extensionId}`;
   });
 }
     }).render('#paypal-button-container');
