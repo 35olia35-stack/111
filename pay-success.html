@@ -49,7 +49,14 @@
   const params = new URLSearchParams(window.location.search);
 
   if (params.get("paid") === "1") {
-    localStorage.setItem("ebayPaid", "true");
+    const extensionId = params.get("extensionId");
+
+    if (extensionId) {
+      chrome.runtime.sendMessage(extensionId, {
+        type: "PAYMENT_SUCCESS",
+        paid: true
+      });
+    }
   }
 </script>
 
